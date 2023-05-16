@@ -57,6 +57,7 @@ void run_Dijkstra() {
     // Wczytanie grafu z pliku
     ifstream file;
     file.open("graph.txt");
+    // Struktura pliku graph.txt- pierwsza linia to rozmiar grafu, a kolejne linie to macierz sasiedztwa
 
     if (!file) {
         cout << "Nie mozna otworzyc pliku!" << endl;
