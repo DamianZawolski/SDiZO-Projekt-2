@@ -242,29 +242,79 @@ int main()
                         cin>>wybor3;
 
                         if (wybor3 == 1){
+                            // Wczytaj z pliku
+                            Kruskal_ustawiony = true;
+                            cout<<"Wczytywanie z pliku"<<endl;
+                            cout<<"Podaj nazwe pliku: ";
+                            cin>>nazwa_pliku;
+                            cout<<"Wczytywanie z pliku: "<<nazwa_pliku<<endl;
+                            cout<<"Wczytywanie zakonczone"<<endl;
 
                         }
                         else if (wybor3 == 2){
-
+                            // Wyswietl graf
+                            if (Kruskal_ustawiony == true){
+                                cout<<"Wyswietlanie grafu"<<endl;
+                                cout<<"Wyswietlanie zakonczone"<<endl;
+                            }
+                            else{
+                                cout<<"Najpierw wczytaj plik"<<endl;
+                            }
                         }
                         else if (wybor3 == 3){
-
+                            // Wyswietl macierz sasiedztwa
+                            if (Kruskal_ustawiony == true){
+                                cout<<"Wyswietlanie macierzy sasiedztwa"<<endl;
+                                cout<<"Wyswietlanie zakonczone"<<endl;
+                            }
+                            else{
+                                cout<<"Najpierw wczytaj plik"<<endl;}
                         }
                         else if (wybor3 == 4){
-
+                            // Wyswietl macierz incydencji
+                            if (Kruskal_ustawiony == true){
+                                cout<<"Wyswietlanie macierzy incydencji"<<endl;
+                                cout<<"Wyswietlanie zakonczone"<<endl;
+                            }
+                            else{
+                                cout<<"Najpierw wczytaj plik"<<endl;}
                         }
                         else if (wybor3 == 5){
-
+                            // Wyswietl liste sasiedztwa
+                            if (Kruskal_ustawiony == true){
+                                cout<<"Wyswietlanie listy sasiedztwa"<<endl;
+                                cout<<"Wyswietlanie zakonczone"<<endl;
+                            }
+                            else{
+                                cout<<"Najpierw wczytaj plik"<<endl;}
                         }
                         else if (wybor3 == 6){
-
+                            // Wyswietl liste incydencji
+                            if (Kruskal_ustawiony == true){
+                                cout<<"Wyswietlanie listy incydencji"<<endl;
+                                cout<<"Wyswietlanie zakonczone"<<endl;
+                            }
+                            else{
+                                cout<<"Najpierw wczytaj plik"<<endl;}
                         }
                         else if (wybor3 == 7){
-
+                            // Wyswietl liste krawedzi
+                            if (Kruskal_ustawiony == true){
+                                cout<<"Wyswietlanie listy krawedzi"<<endl;
+                                cout<<"Wyswietlanie zakonczone"<<endl;
+                            }
+                            else{
+                                cout<<"Najpierw wczytaj plik"<<endl;}
                         }
                         else if (wybor3 == 8){
-
-                        }
+                            // Wyswietl liste wierzcholkow
+                            if (Kruskal_ustawiony == true){
+                                cout<<"Wyswietlanie listy wierzcholkow"<<endl;
+                                cout<<"Wyswietlanie zakonczone"<<endl;
+                            }
+                            else{
+                                cout<<"Najpierw wczytaj plik"<<endl;
+                        }}
                         else if (wybor3 == 9){
                             cout << "Powrot" << endl;
                             break;}

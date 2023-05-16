@@ -1,7 +1,8 @@
 #include "Bellman-Ford.h"
 #include <iostream>
 #include <fstream>
-
+#include <limits.h>
+#include <stdio.h>
 using namespace std;
 
 // Algorytm Bellmana-Forda
@@ -19,7 +20,7 @@ void bellmanFord(int** graph, int size, int start) {
     distance[start] = 0;
     // Szukamy najkrotszej sciezki
     for (int i = 0; i < size - 1; i++) {
-        int u = minDistance(distance, visited, size);
+        int u = minDistanceBellman(distance, visited, size);
         visited[u] = true;
 
         for (int v = 0; v < size; v++) {
@@ -30,25 +31,25 @@ void bellmanFord(int** graph, int size, int start) {
         }
     }
 
-    printSolution(distance, parent, size, start);
+    printSolutionBellman(distance, parent, size, start);
 }
 
-void printSolution(int* distance, int* parent, int size, int start){
+void printSolutionBellman(int* distance, int* parent, int size, int start){
     // Wypisanie wynikow
     cout << "Wierzcholek \t Odleglosc od zrodla \t Sciezka" << endl;
     for (int i = 0; i < size; i++) {
         cout << i << "\t\t" << distance[i] << "\t\t\t" << start;
-        printPath(parent, i);
+        printPathBellman(parent, i);
         cout << endl;
     }
 }
 
-void printPath(int* parent, int j) {
+void printPathBellman(int* parent, int j) {
     // Wypisanie sciezki
     if (parent[j] == -1) {
         return;
     }
-    printPath(parent, parent[j]);
+    printPathBellman(parent, parent[j]);
     cout << " -> " << j;
 }
 
@@ -89,7 +90,7 @@ void run_Bellman() {
     delete[] graph;
 }
 
-int minDistance(int* distance, bool* visited, int size) {
+int minDistanceBellman(int* distance, bool* visited, int size) {
     // Znajduje wierzcholek o najmniejszej odleglosci od zrodla
     int min = INT_MAX;
     int minIndex;

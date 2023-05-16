@@ -58,8 +58,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/Studia/6sem INS, 4 sem ITE/SDiZO/SDiZO 2/SDiZO-Projekt-2",
-      "program": "d:/Studia/6sem INS, 4 sem ITE/SDiZO/SDiZO 2/SDiZO-Projekt-2/build/Debug/outDebug",
+      "cwd": "d:/Python/SDiZO2/SDiZO-Projekt-2",
+      "program": "d:/Python/SDiZO2/SDiZO-Projekt-2/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

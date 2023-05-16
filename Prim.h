@@ -5,5 +5,6 @@
 #endif //SDIZO_PROJEKT_2_PRIM_H
 
 void prim(int** graph, int size);
-void printSolution(int** tree, int size, int total);
+void printSolutionPrim(int** tree, int size, int total);
 void run_Prim();
+int minDistancePrim(int* distance, bool* visited, int size);

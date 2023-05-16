@@ -1,7 +1,8 @@
 #include "Prim.h"
 #include <iostream>
 #include <fstream>
-
+#include <limits.h>
+#include <stdio.h>
 using namespace std;
 
 // Algorytm Prima
@@ -21,7 +22,7 @@ void prim(int** graph, int size, int start) {
     distance[start] = 0;
     // Szukanie najkrotszej sciezki
     for (int i = 0; i < size - 1; i++) {
-        int u = minDistance(distance, visited, size);
+        int u = minDistancePrim(distance, visited, size);
         visited[u] = true;
 
         for (int v = 0; v < size; v++) {
@@ -32,25 +33,25 @@ void prim(int** graph, int size, int start) {
         }
     }
 
-    printSolution(distance, parent, size, start);
+    printSolutionPrim(distance, parent, size, start);
 }
 
-void printSolution(int* distance, int* parent, int size, int start) {
+void printSolutionPrim(int* distance, int* parent, int size, int start) {
     // Wypisanie wynikow
     cout << "Wierzcholek \t Odleglosc od zrodla \t Sciezka" << endl;
     for (int i = 0; i < size; i++) {
         cout << i << "\t\t" << distance[i] << "\t\t\t" << start;
-        printPath(parent, i);
+        printPathPrim(parent, i);
         cout << endl;
     }
 }
 
-void printPath(int* parent, int j) {
+void printPathPrim(int* parent, int j) {
     // Wypisanie sciezki
     if (parent[j] == -1) {
         return;
     }
-    printPath(parent, parent[j]);
+    printPathPrim(parent, parent[j]);
     cout << " -> " << j;
 }
 
@@ -82,7 +83,7 @@ void run_Prim() {
     prim(graph, size, 0);
 }
 
-int minDistance(int* distance, bool* visited, int size) {
+int minDistancePrim(int* distance, bool* visited, int size) {
     // Zmienne pomocnicze
     int min = INT_MAX;
     int min_index;

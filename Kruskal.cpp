@@ -1,7 +1,8 @@
 #include "Kruskal.h"
 #include <iostream>
 #include <fstream>
-
+#include <limits.h>
+#include <stdio.h>
 using namespace std;
 
 // Algorytm Kruskala
@@ -57,10 +58,10 @@ void kruskal(int** graph, int size) {
         graph[a][b] = graph[b][a] = INT_MAX;
     }
 
-    printSolution(tree, size, total);
+    printSolutionKruskal(tree, size, total);
 }
 
-void printSolution(int** tree, int size, int total) {
+void printSolutionKruskal(int** tree, int size, int total) {
     // Wypisanie wyniku
     cout << "Krawedz \t Waga" << endl;
     for (int i = 0; i < size; i++) {

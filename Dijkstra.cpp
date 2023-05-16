@@ -1,7 +1,8 @@
 #include "Dijkstra.h"
 #include <iostream>
 #include <fstream>
-
+#include <limits.h>
+#include <stdio.h>
 using namespace std;
 
 // Algorytm Dijkstry
@@ -20,7 +21,7 @@ void dijkstra(int** graph, int size, int start) {
     distance[start] = 0;
     // Szukanie najkrotszej sciezki
     for (int i = 0; i < size - 1; i++) {
-        int u = minDistance(distance, visited, size);
+        int u = minDistanceDijkstra(distance, visited, size);
         visited[u] = true;
         // Aktualizacja tablic
         for (int v = 0; v < size; v++) {
@@ -31,25 +32,25 @@ void dijkstra(int** graph, int size, int start) {
         }
     }
 
-    printSolution(distance, parent, size, start);
+    printSolutionDijkstra(distance, parent, size, start);
 }
 
-void printSolution(int* distance, int* parent, int size, int start) {
+void printSolutionDijkstra(int* distance, int* parent, int size, int start) {
     // Wypisanie wynikow
     cout << "Wierzcholek \t Odleglosc od zrodla \t Sciezka" << endl;
     for (int i = 0; i < size; i++) {
         cout << i << "\t\t" << distance[i] << "\t\t\t" << start;
-        printPath(parent, i);
+        printPathDijkstra(parent, i);
         cout << endl;
     }
 }
 
-void printPath(int* parent, int j) {
+void printPathDijkstra(int* parent, int j) {
     // Wypisanie sciezki
     if (parent[j] == -1) { // Warunek zakonczenia rekurencji
         return;
     }
-    printPath(parent, parent[j]);
+    printPathDijkstra(parent, parent[j]);
     cout << " -> " << j;
 }
 
@@ -88,7 +89,7 @@ void run_Dijkstra() {
     delete[] graph;
 }
 
-int minDistance(int* distance, bool* visited, int size) {
+int minDistanceDijkstra(int* distance, bool* visited, int size) {
     // Znalezienie najmniejszej odleglosci
     int min = INT_MAX;
     int min_index;
