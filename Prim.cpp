@@ -1,99 +1,98 @@
 #include "Prim.h"
 #include <iostream>
 #include <fstream>
-#include <limits.h>
-#include <stdio.h>
+
 using namespace std;
 
 // Algorytm Prima
 
-void prim(int** graph, int size, int start) {
+void prim(int** graf, int rozmiar, int start) {
     // Zmienne pomocnicze
-    int* distance = new int[size];
-    int* parent = new int[size];
-    bool* visited = new bool[size];
+    int* dystans = new int[rozmiar];
+    int* rodzic = new int[rozmiar];
+    bool* odwiedzone = new bool[rozmiar];
     // Inicjalizacja
-    for (int i = 0; i < size; i++) {
-        distance[i] = INT_MAX;
-        parent[i] = -1;
-        visited[i] = false;
+    for (int i = 0; i < rozmiar; i++) {
+        dystans[i] = INT_MAX;
+        rodzic[i] = -1;
+        odwiedzone[i] = false;
     }
     // Ustawienie wierzcholka startowego
-    distance[start] = 0;
+    dystans[start] = 0;
     // Szukanie najkrotszej sciezki
-    for (int i = 0; i < size - 1; i++) {
-        int u = minDistancePrim(distance, visited, size);
-        visited[u] = true;
+    for (int i = 0; i < rozmiar - 1; i++) {
+        int u = minimalnyDystans(dystans, odwiedzone, rozmiar);
+        odwiedzone[u] = true;
 
-        for (int v = 0; v < size; v++) {
-            if (!visited[v] && graph[u][v] && distance[u] != INT_MAX && graph[u][v] < distance[v]) { // Sprawdzenie czy wierzcholek nie zostal odwiedzony, czy istnieje krawedz miedzy wierzcholkami, czy odleglosc od wierzcholka startowego nie jest nieskonczona, czy odleglosc od wierzcholka startowego do wierzcholka v jest mniejsza od obecnej odleglosci
-                distance[v] = graph[u][v];
-                parent[v] = u;
+        for (int v = 0; v < rozmiar; v++) {
+            if (!odwiedzone[v] && graf[u][v] && dystans[u] != INT_MAX && graf[u][v] < dystans[v]) { // Sprawdzenie czy wierzcholek nie zostal odwiedzony, czy istnieje krawedz miedzy wierzcholkami, czy odleglosc od wierzcholka startowego nie jest nieskonczona, czy odleglosc od wierzcholka startowego do wierzcholka v jest mniejsza od obecnej odleglosci
+                dystans[v] = graf[u][v];
+                rodzic[v] = u;
             }
         }
     }
 
-    printSolutionPrim(distance, parent, size, start);
+    wypiszRozwiazanie(dystans, rodzic, rozmiar, start);
 }
 
-void printSolutionPrim(int* distance, int* parent, int size, int start) {
+void wypiszRozwiazanie(int* dystans, int* rodzic, int rozmiar, int start) {
     // Wypisanie wynikow
     cout << "Wierzcholek \t Odleglosc od zrodla \t Sciezka" << endl;
-    for (int i = 0; i < size; i++) {
-        cout << i << "\t\t" << distance[i] << "\t\t\t" << start;
-        printPathPrim(parent, i);
+    for (int i = 0; i < rozmiar; i++) {
+        cout << i << "\t\t" << dystans[i] << "\t\t\t" << start;
+        wypiszSciezke(rodzic, i);
         cout << endl;
     }
 }
 
-void printPathPrim(int* parent, int j) {
+void wypiszSciezke(int* rodzic, int j) {
     // Wypisanie sciezki
-    if (parent[j] == -1) {
+    if (rodzic[j] == -1) {
         return;
     }
-    printPathPrim(parent, parent[j]);
+    wypiszSciezke(rodzic, rodzic[j]);
     cout << " -> " << j;
 }
 
-void run_Prim() {
+void uruchom_Prima() {
     // Otwarcie pliku
-    ifstream file;
-    file.open("graph.txt");
+    ifstream plik;
+    plik.open("graf.txt");
 
-    if (!file) {
+    if (!plik) {
         cout << "Nie mozna otworzyc pliku!" << endl;
         return;
     }
     // Zmienne pomocnicze
-    int size;
-    file >> size;
+    int rozmiar;
+    plik >> rozmiar;
     // Inicjalizacja grafu
-    int** graph = new int* [size];
-    for (int i = 0; i < size; i++) {
-        graph[i] = new int[size];
+    int** graf = new int* [rozmiar];
+    for (int i = 0; i < rozmiar; i++) {
+        graf[i] = new int[rozmiar];
     }
     //  Wczytanie grafu z pliku
-    for (int i = 0; i < size; i++) {
-        graph[i][i] = 0;
-        for (int j = i + 1; j < size; j++) {
-            file >> graph[i][j];
-            graph[j][i] = graph[i][j];
+    for (int i = 0; i < rozmiar; i++) {
+        graf[i][i] = 0;
+        for (int j = i + 1; j < rozmiar; j++) {
+            plik >> graf[i][j];
+            graf[j][i] = graf[i][j];
         }
     }
-    prim(graph, size, 0);
+    prim(graf, rozmiar, 0);
 }
 
-int minDistancePrim(int* distance, bool* visited, int size) {
+int minimalnyDystans(int* dystans, bool* odwiedzone, int rozmiar) {
     // Zmienne pomocnicze
     int min = INT_MAX;
-    int min_index;
+    int min_indeks;
     // Szukanie najmniejszej odleglosci
-    for (int i = 0; i < size; i++) {
-        if (visited[i] == false && distance[i] <= min) {    // Sprawdzenie czy wierzcholek nie zostal odwiedzony, czy odleglosc od wierzcholka startowego jest mniejsza od obecnej odleglosci
-            min = distance[i];
-            min_index = i;
+    for (int i = 0; i < rozmiar; i++) {
+        if (odwiedzone[i] == false && dystans[i] <= min) {    // Sprawdzenie czy wierzcholek nie zostal odwiedzony, czy odleglosc od wierzcholka startowego jest mniejsza od obecnej odleglosci
+            min = dystans[i];
+            min_indeks = i;
         }
     }
 
-    return min_index;
+    return min_indeks;
 }

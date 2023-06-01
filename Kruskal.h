@@ -5,5 +5,5 @@
 #endif //SDIZO_PROJEKT_2_KRUSKAL_H
 
 void kruskal(int** graph, int size);
-void printSolutionKruskal(int** tree, int size, int total);
-void run_Kruskal();
+void wypiszRozwiazanie(int** tree, int size, int total);
+void uruchom_Kruskala();

@@ -1,106 +1,105 @@
 #include "Bellman-Ford.h"
 #include <iostream>
 #include <fstream>
-#include <limits.h>
-#include <stdio.h>
+
 using namespace std;
 
 // Algorytm Bellmana-Forda
-void bellmanFord(int** graph, int size, int start) {
-    int* distance = new int[size];
-    int* parent = new int[size];
-    bool* visited = new bool[size];
+void bellmanFord(int** graf, int rozmiar, int start) {
+    int* dystans = new int[rozmiar];
+    int* rodzic = new int[rozmiar];
+    bool* odwiedzone = new bool[rozmiar];
 
-    for (int i = 0; i < size; i++) {
-        distance[i] = INT_MAX;
-        parent[i] = -1;
-        visited[i] = false;
+    for (int i = 0; i < rozmiar; i++) {
+        dystans[i] = INT_MAX;
+        rodzic[i] = -1;
+        odwiedzone[i] = false;
     }
     // Odleglosc od zrodla do zrodla jest rowna 0
-    distance[start] = 0;
+    dystans[start] = 0;
     // Szukamy najkrotszej sciezki
-    for (int i = 0; i < size - 1; i++) {
-        int u = minDistanceBellman(distance, visited, size);
-        visited[u] = true;
+    for (int i = 0; i < rozmiar - 1; i++) {
+        int u = minimalnyDystans(dystans, odwiedzone, rozmiar);
+        odwiedzone[u] = true;
 
-        for (int v = 0; v < size; v++) {
-            if (!visited[v] && graph[u][v] && distance[u] != INT_MAX && distance[u] + graph[u][v] < distance[v]) {  // Sprawdzamy czy wierzcholek nie zostal odwiedzony, czy istnieje krawedz miedzy wierzcholkami, czy odleglosc od zrodla nie jest nieskonczona i czy odleglosc od zrodla + waga krawedzi jest mniejsza od obecnej odleglosci
-                distance[v] = distance[u] + graph[u][v];
-                parent[v] = u;
+        for (int v = 0; v < rozmiar; v++) {
+            if (!odwiedzone[v] && graf[u][v] && dystans[u] != INT_MAX && dystans[u] + graf[u][v] < dystans[v]) {  // Sprawdzamy czy wierzcholek nie zostal odwiedzony, czy istnieje krawedz miedzy wierzcholkami, czy odleglosc od zrodla nie jest nieskonczona i czy odleglosc od zrodla + waga krawedzi jest mniejsza od obecnej odleglosci
+                dystans[v] = dystans[u] + graf[u][v];
+                rodzic[v] = u;
             }
         }
     }
 
-    printSolutionBellman(distance, parent, size, start);
+    wypiszRozwiazanie(dystans, rodzic, rozmiar, start);
 }
 
-void printSolutionBellman(int* distance, int* parent, int size, int start){
+void wypiszRozwiazanie(int* dystans, int* rodzic, int rozmiar, int start){
     // Wypisanie wynikow
     cout << "Wierzcholek \t Odleglosc od zrodla \t Sciezka" << endl;
-    for (int i = 0; i < size; i++) {
-        cout << i << "\t\t" << distance[i] << "\t\t\t" << start;
-        printPathBellman(parent, i);
+    for (int i = 0; i < rozmiar; i++) {
+        cout << i << "\t\t" << dystans[i] << "\t\t\t" << start;
+        wypiszSciezke(rodzic, i);
         cout << endl;
     }
 }
 
-void printPathBellman(int* parent, int j) {
+void wypiszSciezke(int* rodzic, int j) {
     // Wypisanie sciezki
-    if (parent[j] == -1) {
+    if (rodzic[j] == -1) {
         return;
     }
-    printPathBellman(parent, parent[j]);
+    wypiszSciezke(rodzic, rodzic[j]);
     cout << " -> " << j;
 }
 
-void run_Bellman() {
+void uruchom_Bellmana() {
     // Wczytanie grafu z pliku
-    ifstream file;
-    file.open("graph.txt");
+    ifstream plik;
+    plik.open("graf.txt");
     // Sprawdzenie czy plik istnieje
-    if (!file) {
+    if (!plik) {
         cout << "Nie mozna otworzyc pliku!" << endl;
         return;
     }
     // Zmienne pomocnicze
-    int size;
-    file >> size;
+    int rozmiar;
+    plik >> rozmiar;
     // Zalokowanie pamieci
-    int** graph = new int*[size];
-    for (int i = 0; i < size; i++) {
-        graph[i] = new int[size];
+    int** graf = new int*[rozmiar];
+    for (int i = 0; i < rozmiar; i++) {
+        graf[i] = new int[rozmiar];
     }
     // Wczytanie grafu
-    for (int i = 0; i < size; i++) {
-        graph[i][i] = 0;
-        for (int j = i + 1; j < size; j++) {
-            file >> graph[i][j];
-            graph[j][i] = graph[i][j];
+    for (int i = 0; i < rozmiar; i++) {
+        graf[i][i] = 0;
+        for (int j = i + 1; j < rozmiar; j++) {
+            plik >> graf[i][j];
+            graf[j][i] = graf[i][j];
         }
     }
     int start;
     cout << "Podaj wierzcholek startowy: ";
     cin >> start;
     // Wywolanie algorytmu
-    bellmanFord(graph, size, start);
+    bellmanFord(graf, rozmiar, start);
     // Zwolnienie pamieci
-    for (int i = 0; i < size; i++) {
-        delete[] graph[i];
+    for (int i = 0; i < rozmiar; i++) {
+        delete[] graf[i];
     }
-    delete[] graph;
+    delete[] graf;
 }
 
-int minDistanceBellman(int* distance, bool* visited, int size) {
+int minimalnyDystans(int* dystans, bool* odwiedzone, int rozmiar) {
     // Znajduje wierzcholek o najmniejszej odleglosci od zrodla
     int min = INT_MAX;
-    int minIndex;
+    int minIndeks;
     // Przeszukuje tablice odleglosci
-    for (int i = 0; i < size; i++) {
-        if (!visited[i] && distance[i] <= min) {
-            min = distance[i];
-            minIndex = i;
+    for (int i = 0; i < rozmiar; i++) {
+        if (!odwiedzone[i] && dystans[i] <= min) {
+            min = dystans[i];
+            minIndeks = i;
         }
     }
 
-    return minIndex;
+    return minIndeks;
 }
